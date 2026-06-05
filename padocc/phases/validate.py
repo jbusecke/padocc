@@ -787,7 +787,10 @@ class ValidateDatasets(LoggedOperation):
             # Limit for max growbox memory usage.
             max_size = testvar.size * 64
             max_mem = 2e9 # 2GB
-            box_size_limit = math.ceil(max(1, math.pow(max_size/max_mem, 1/len(testvar.dims))))
+            if len(testvar.dims) > 0:
+                box_size_limit = math.ceil(max(1, math.pow(max_size/max_mem, 1/len(testvar.dims))))
+            else:
+                box_size_limit = 1
 
             self._validate_selection(var, testvar, controlvar, dim_mid=dim_mid, current=current, box_size_limit=box_size_limit)
 
@@ -1211,7 +1214,9 @@ class ValidateOperation(ProjectOperation):
         sample, rfnum = self._open_sample(rf=rf)
         vd.replace_dataset(sample, label=self.source_format)
 
-        _ = vd.decode_times_ok()
+        if check == 0:
+            # Only check time decoding for the first file
+            _ = vd.decode_times_ok()
 
         ## 2. Data Check
         # Never decode times when running data validation.    

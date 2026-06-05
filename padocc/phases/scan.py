@@ -182,7 +182,7 @@ class ScanOperation(ProjectOperation):
         props = None
         if self.cfa_enabled or self._thorough:
             self.logger.info(f'Determined {limiter} files to scan (out of {nfiles})')
-            self.logger.info(f'Performing CFA Base Scan (Standard)')
+            self.logger.info('Performing CFA Base Scan (Standard)')
             _, props = self._scan_cfa(limiter=limiter)
 
         if props is not None:
@@ -320,7 +320,7 @@ class ScanOperation(ProjectOperation):
             verbose=self._verbose
         )
 
-        status = comp._run(compute_subset=0, compute_total=limiter, subset=True, output=False)
+        status = comp._run(compute_subset=None, compute_total=limiter, subset=True, output=False)
 
         if status[0] == 'Success':
             self.logger.info('Determined data properties:')

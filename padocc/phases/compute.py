@@ -397,7 +397,7 @@ class ComputeOperation(ProjectOperation):
                 self.allfiles.get(),
                 compute_subset,
                 compute_total)
-            
+        
         # Errors for final part as lim1 is None
         if lim1 is None:
             lim1 = len(self.allfiles)
@@ -630,8 +630,8 @@ class ComputeOperation(ProjectOperation):
         """
         Determine the limits to apply to this dataset
         """
-        lim0 = 0
-        lim1 = self.limiter
+        lim0 = compute_subset or 0
+        lim1 = compute_total or self.limiter
 
         if compute_subset is not None:
             try:
@@ -1551,6 +1551,7 @@ class KerchunkDS(ComputeOperation):
 
         # Identify variables to be checked
         if self.drop_vars:
+            variables = self.base_cfg['data_properties']['aggregated_vars']
             checklist = [f'{v}/.zarray' for v in variables if v not in self.drop_vars]
         elif self.base_cfg['data_properties']['aggregated_vars'] != 'Unknown':
             variables = self.base_cfg['data_properties']['aggregated_vars']
